@@ -1,0 +1,13 @@
+$global-font-family: Menlo, monospace;
+$global-background: #000;
+$global-color: #fff;
+$text-meta-color: $global-color;
+$inverse-base-heading-color: $global-color;
+$base-heading-color: $global-color;
+
+// 1. Import default variables and available mixins.
+@import "uikit/src/scss/variables-theme.scss";
+@import "uikit/src/scss/mixins-theme.scss";
+
+// 2. Import UIkit.
+@import "uikit/src/scss/uikit-theme.scss";
