@@ -1,0 +1,37 @@
+{
+  "name": "NEMU",
+  "version": "0.0.1",
+  "main": "dist/index.html",
+  "license": "MIT",
+  "author": {
+    "email": "me@eries.id",
+    "name": "Eries Trisnadi",
+    "url": "https://eries.id"
+  },
+  "description": "NES Emulator for Windows, MacOS, Linux",
+  "private": true,
+  "dependencies": {
+    "autoprefixer": "~7.2.5",
+    "jsnes": "~1.0.0",
+    "postcss-modules": "~1.1.0",
+    "react": "~16.2.0",
+    "react-document-title": "~2.0.3",
+    "react-dom": "~16.2.0",
+    "react-router-dom": "~4.2.2",
+    "ringbufferjs": "~1.1.0",
+    "uikit": "~3.0.0-beta.38"
+  },
+  "devDependencies": {
+    "babel-preset-env": "~1.6.1",
+    "babel-preset-react": "~6.24.1",
+    "node-sass": "~4.7.2",
+    "npm-run-all": "^4.1.2",
+    "parcel-bundler": "~1.5.1"
+  },
+  "scripts": {
+    "start": "parcel src/index.html --no-cache -d electron/app",
+    "build": "run-s build:parcel build:electron",
+    "build:parcel": "parcel build src/index.html --public-url ./ --no-cache -d electron/app",
+    "build:electron": "cd electron && npm run build -- -w"
+  }
+}
