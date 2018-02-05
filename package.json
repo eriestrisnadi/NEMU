@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "autoprefixer": "~7.2.5",
+    "electron-is-dev": "^0.3.0",
     "jsnes": "~1.0.0",
     "postcss-modules": "~1.1.0",
     "react": "~16.2.0",
@@ -22,16 +23,22 @@
     "uikit": "~3.0.0-beta.38"
   },
   "devDependencies": {
+    "babel-jest": "^22.1.0",
     "babel-preset-env": "~1.6.1",
     "babel-preset-react": "~6.24.1",
+    "jest": "^22.1.4",
     "node-sass": "~4.7.2",
     "npm-run-all": "^4.1.2",
-    "parcel-bundler": "~1.5.1"
+    "parcel-bundler": "~1.5.1",
+    "react-test-renderer": "^16.2.0"
   },
   "scripts": {
-    "start": "parcel src/index.html --no-cache -d electron/app",
+    "start": "run-p -l -r start:parcel start:electron",
+    "start:parcel": "parcel src/index.html --no-cache -d electron/app",
+    "start:electron": "cd electron && npm run electron",
     "build": "run-s build:parcel build:electron",
     "build:parcel": "parcel build src/index.html --public-url ./ --no-cache -d electron/app",
-    "build:electron": "cd electron && npm run build -- -w"
+    "build:electron": "cd electron && npm run build -- -w",
+    "test": "jest -u"
   }
 }
