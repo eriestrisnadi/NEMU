@@ -31,11 +31,4 @@ test('App should render first Home Component', () => {
   
   // re-rendering
   expect(component.toJSON()).toMatchSnapshot();
-  
-  expect(() => {
-    tree.props.onDrop(evt);
-  }).toThrow();
-
-  // re-rendering
-  expect(component.toJSON()).toMatchSnapshot();
 });

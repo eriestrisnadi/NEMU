@@ -33,5 +33,3 @@ exports[`App should render first Home Component 2`] = `
   </div>
 </div>
 `;
-
-exports[`App should render first Home Component 3`] = `null`;
