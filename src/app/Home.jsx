@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import DocumentTitle from 'react-document-title';
-import { filter, keys } from 'lodash';
+import { filter, keys, concat, toNumber, split, differenceBy } from 'lodash';
 import { Controller } from 'jsnes';
 import keycode from 'keycode';
+import UIkit from 'uikit';
 import { KEYS, Database } from './utils/Utils';
 
 const db = new Database();
@@ -27,10 +28,11 @@ class Home extends Component {
     this.handleDragOver = this.handleDragOver.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleSave = this.handleSave.bind(this);
   }
 
   componentDidMount(){
-    console.log(this.keyPadNames);
     this.keys.map(o => {
       this.setState({
         [`${o.controller}-${o.key}`]: keycode(o.value)
@@ -54,11 +56,12 @@ class Home extends Component {
           <h1>{this.props.title}</h1>
           
           <button className="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-controller-1">Controller 1</button>
-          <div id="modal-controller-1" uk-modal="">
+          <div id="modal-controller-1" uk-modal="" ref={el => {this.controller1 = el}}>
             <div className="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
               {keys[0]}
               <div className="uk-margin uk-flex uk-flex-right">
                 <button
+                  onClick={e => this.handleSave(e, this.controller1)}
                   className="uk-button uk-button-primary"
                   type="button">
                   Save
@@ -68,11 +71,12 @@ class Home extends Component {
           </div>
 
           <button className="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-controller-2">Controller 2</button>
-          <div id="modal-controller-2" uk-modal="">
+          <div id="modal-controller-2" uk-modal="" ref={el => {this.controller2 = el}}>
             <div className="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
               {keys[1]}
               <div className="uk-margin uk-flex uk-flex-right">
                 <button
+                  onClick={e => this.handleSave(e, this.controller2)}
                   className="uk-button uk-button-primary"
                   type="button">
                   Save
@@ -103,6 +107,7 @@ class Home extends Component {
   };
 
   handleKeyUp(e) {
+    e.preventDefault();
     const target = e.target;
     const value = keycode(e.keyCode);
     target.value = value;
@@ -111,7 +116,35 @@ class Home extends Component {
     this.setState({
       [key]: value
     });
+  }
+
+  handleKeyDown(e) {
+    e.target.value = '';
     e.preventDefault();
+  }
+
+  handleSave(e, el) {
+    const data = keys(this.state).map(k => {
+      const collections = concat(split(k, '-'), this.state[k]);
+      const value = keycode(collections[2]);
+      const name = keycode(value);
+      
+      return {
+        controller: toNumber(collections[0]),
+        key: toNumber(collections[1]),
+        value,
+        name
+      }
+    });
+    
+    db.set('KEYBOARDS', data)
+      .write();
+    
+    const diff = differenceBy(data, db.get('KEYBOARDS').value(), 'value');
+    
+    if (diff.length === 0) {
+      UIkit.modal(el).hide();
+    }
   }
 
   getControllerList(controllerId) {
@@ -128,7 +161,7 @@ class Home extends Component {
               <input
                 name={`${o.controller}-${o.key}`}
                 defaultValue={keyName}
-                onKeyDown={e => e.target.value = ''}
+                onKeyDown={e => this.handleKeyDown(e)}
                 onKeyUp={e => this.handleKeyUp(e)}
                 className="uk-input"
                 id="form-horizontal-text"

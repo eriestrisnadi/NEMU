@@ -2,8 +2,6 @@ import { find, concat } from 'lodash';
 import Database from './Database';
 import KEYS from './Keys.const';
 
-const db = new Database();
-
 // TODO: NEED TO ADD SETTINGS CONTROLLER ON UI FOR THIS!
 
 export default class KeyboardController {
@@ -15,13 +13,15 @@ export default class KeyboardController {
 
     this.opts = Object.assign({}, defaultOpts, opts);
 
+    this.keys = this.getKeys();
+
     this.handleKeyDown.bind(this);
     this.handleKeyPress.bind(this);
     this.handleKeyUp.bind(this);
   }
 
   handleKeyDown(e) {
-    const key = find(this.getKeys(), {value: e.keyCode});
+    const key = find(this.keys, {value: e.keyCode});
     if (key) {
       if(typeof this.opts.onButtonDown !== 'undefined') {
         this.opts.onButtonDown(key.controller, key.key);
@@ -31,7 +31,7 @@ export default class KeyboardController {
   };
 
   handleKeyUp(e) {
-    const key = find(this.getKeys(), {value: e.keyCode});
+    const key = find(this.keys, {value: e.keyCode});
     if (key) {
       if(typeof this.opts.onButtonUp !== 'undefined') {
         this.opts.onButtonUp(key.controller, key.key);
@@ -45,6 +45,7 @@ export default class KeyboardController {
   };
 
   getKeys() {
-    return concat([], KEYS, db.get('KEYBOARDS').value());
+    const db = new Database();
+    return db.get('KEYBOARDS').value();
   }
 }
