@@ -4,6 +4,8 @@ $global-color: #fff;
 $text-meta-color: $global-color;
 $inverse-base-heading-color: $global-color;
 $base-heading-color: $global-color;
+$form-label-color: $global-color;
+$button-default-color: $global-color;
 
 // 1. Import default variables and available mixins.
 @import "uikit/src/scss/variables-theme.scss";
