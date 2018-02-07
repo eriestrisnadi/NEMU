@@ -53,9 +53,18 @@ class Home extends Component {
           uk-height-viewport=""
           onDragOver={e => this.handleDragOver(e)}
           onDrop={e => this.handleDrop(e)}>
-          <h1>{this.props.title}</h1>
+          <h1>
+            {this.props.title}
+            <small
+              class="uk-text-small uk-text-muted">
+                &nbsp;v1.0.0
+            </small>
+          </h1>
           
-          <button className="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-controller-1">Controller 1</button>
+          <div uk-grid="">
+            <button className="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-controller-1">Controller 1</button>
+            <button className="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-controller-2">Controller 2</button>
+          </div>
           <div id="modal-controller-1" uk-modal="" ref={el => {this.controller1 = el}}>
             <div className="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
               {keys[0]}
@@ -69,8 +78,6 @@ class Home extends Component {
               </div>
             </div>
           </div>
-
-          <button className="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-controller-2">Controller 2</button>
           <div id="modal-controller-2" uk-modal="" ref={el => {this.controller2 = el}}>
             <div className="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
               {keys[1]}

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NES } from 'jsnes';
 import DocumentTitle from 'react-document-title';
 import Screen from './Screen';
+import pkg from '../../package.json';
 import {
   Speaker,
   FrameTimer,
@@ -13,6 +14,7 @@ class Run extends Component {
     super(props);
     this.state = {
       running: false,
+      fps: 0
     };
 
     // This binding is necessary to make `this` work in the callback
@@ -32,18 +34,20 @@ class Run extends Component {
             <div className="uk-container uk-container-expand">
               <nav uk-navbar="">
                 <div className="uk-navbar-left">
-                  <ul className="uk-navbar-nav">
-                    <div className="uk-navbar-item">
-                      <button
-                        type="button"
-                        className="uk-button uk-button-default"
-                        onClick={e => this.handleGoBack(e)}>
-                          Back
-                      </button>
-                    </div>
-                  </ul>
+                  <div className="uk-navbar-item">
+                    <button
+                      type="button"
+                      className="uk-button uk-button-default"
+                      onClick={e => this.handleGoBack(e)}>
+                        Back
+                    </button>
+                  </div>
                 </div>
-                <div className="uk-navbar-right">...</div>
+                <div className="uk-navbar-right">
+                  <div className="uk-navbar-item">
+                    {`FPS: ${this.state.fps}`}
+                  </div>
+                </div>
               </nav>
             </div>
           </div>
@@ -112,7 +116,8 @@ class Run extends Component {
     this.frameTimer.start();
     this.speakers.start();
     this.fpsInterval = setInterval(() => {
-      console.log(`FPS: ${this.nes.getFPS()}`);
+      this.setState({fps: this.nes.getFPS().toFixed(1)});
+      // console.log(`FPS: ${this.nes.getFPS()}`);
     }, 1000);
   };
 
