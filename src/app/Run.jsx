@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { NES } from 'jsnes';
 import DocumentTitle from 'react-document-title';
 import Screen from './Screen';
+import pkg from '../../package.json';
 import {
   Speaker,
   FrameTimer,
@@ -14,36 +14,61 @@ class Run extends Component {
     super(props);
     this.state = {
       running: false,
+      fps: 0
     };
 
     // This binding is necessary to make `this` work in the callback
     this.handleDragOver = this.handleDragOver.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
+    this.handleResize = this.handleResize.bind(this);
+    this.handleLoaded = this.handleLoaded.bind(this);
+    this.handleGoBack = this.handleGoBack.bind(this);
   }
 
   render() {
     return (
       <DocumentTitle
         title={`${this.props.location.state.name.replace('.nes', '')} - ${this.props.title}`}>
-        <div className="uk-flex uk-flex-middle uk-flex-center"
-          uk-height-viewport="">
-          <Screen
-            ref={screen => {
-              this.screen = screen;
-            }}
-            onGenerateFrame={() => {
-              this.nes.frame();
-            }}
-            onMouseDown={(x, y) => {
-              // console.log("mouseDown")
-              this.nes.zapperMove(x, y);
-              this.nes.zapperFireDown();
-            }}
-            onMouseUp={() => {
-              // console.log("mouseUp")
-              this.nes.zapperFireUp();
-            }}
-          />
+        <div>
+          <div className="uk-navbar-container uk-navbar-transparent">
+            <div className="uk-container uk-container-expand">
+              <nav uk-navbar="">
+                <div className="uk-navbar-left">
+                  <div className="uk-navbar-item">
+                    <button
+                      type="button"
+                      className="uk-button uk-button-default"
+                      onClick={e => this.handleGoBack(e)}>
+                        Back
+                    </button>
+                  </div>
+                </div>
+                <div className="uk-navbar-right">
+                  <div className="uk-navbar-item">
+                    {`FPS: ${this.state.fps}`}
+                  </div>
+                </div>
+              </nav>
+            </div>
+          </div>
+          <div className="uk-flex uk-flex-middle uk-flex-center"
+            uk-height-viewport="offset-top: true;">
+            <Screen
+              ref={screen => {
+                this.screen = screen;
+              }}
+              onGenerateFrame={() => {
+                this.nes.frame();
+              }}
+              onMouseDown={(x, y) => {
+                this.nes.zapperMove(x, y);
+                this.nes.zapperFireDown();
+              }}
+              onMouseUp={() => {
+                this.nes.zapperFireUp();
+              }}
+            />
+          </div>
         </div>
       </DocumentTitle>
     );
@@ -91,7 +116,8 @@ class Run extends Component {
     this.frameTimer.start();
     this.speakers.start();
     this.fpsInterval = setInterval(() => {
-      console.log(`FPS: ${this.nes.getFPS()}`);
+      this.setState({fps: this.nes.getFPS().toFixed(1)});
+      // console.log(`FPS: ${this.nes.getFPS()}`);
     }, 1000);
   };
 
@@ -106,6 +132,15 @@ class Run extends Component {
       this.screen.fitInParent();
     }, 100);
   };
+
+  handleResize(e) {
+    this.layout();
+  }
+
+  handleGoBack(e) {
+    this.props.history.push({ pathname: "/"});
+    window.location.reload();
+  }
 
   componentDidMount() {
     this.speakers = new Speaker({
@@ -160,9 +195,8 @@ class Run extends Component {
       (e) => this.keyboardController.handleKeyPress(e)
     );
 
-    window.addEventListener("resize", () => this.layout());
     this.layout();
-
+    window.addEventListener("resize", (e) => this.handleResize(e));
     
     document.addEventListener("dragover",
       (e) => this.handleDragOver(e)
@@ -191,7 +225,7 @@ class Run extends Component {
     document.removeEventListener("drop",
       (e) => this.handleDrop(e)
     );
-    window.removeEventListener("resize", () => this.layout());
+    window.removeEventListener("resize", (e) => this.handleResize(e));
   }
 }
 
