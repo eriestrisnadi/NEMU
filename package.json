@@ -1,6 +1,6 @@
 {
   "name": "NEMU",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "dist/index.html",
   "license": "MIT",
   "author": {
@@ -44,9 +44,10 @@
     "start": "run-p -l -r start:parcel start:electron",
     "start:parcel": "parcel src/index.html --no-cache -d electron/app",
     "start:electron": "cd electron && npm run electron",
-    "build": "run-s build:parcel build:electron",
+    "build": "run-s build:parcel \"build:electron {@}\" --",
     "build:parcel": "parcel build src/index.html --public-url ./ --no-cache -d electron/app",
-    "build:electron": "cd electron && npm run build -- -w",
+    "build:electron": "cd electron && npm run build",
+    "release": "run-p -l -r test \"build {@} -p always\" --",
     "test": "run-s -l lint test:jest",
     "test:jest": "jest -u",
     "lint": "run-s -l lint:check \"lint:eslint {@}\" --",

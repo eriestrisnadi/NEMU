@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { NES } from "jsnes";
 import DocumentTitle from "react-document-title";
+import { isNumber } from "lodash";
 import Screen from "./Screen";
 import pkg from "../../package.json";
 import { Speaker, FrameTimer, KeyboardController } from "./utils/Utils";
@@ -114,7 +115,12 @@ class Run extends Component {
     this.frameTimer.start();
     this.speakers.start();
     this.fpsInterval = setInterval(() => {
-      this.setState({ fps: this.nes.getFPS().toFixed(1) });
+      let fps = this.nes.getFPS();
+      isNumber(fps)
+        ? fps = fps.toFixed(1)
+        : fps = 0;
+        
+      this.setState({ fps });
       // console.log(`FPS: ${this.nes.getFPS()}`);
     }, 1000);
   }

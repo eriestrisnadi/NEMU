@@ -1,6 +1,6 @@
 {
-  "name": "NEMU-DESKTOP",
-  "version": "0.0.1",
+  "name": "NEMU",
+  "version": "1.0.0",
   "main": "main.js",
   "license": "MIT",
   "author": {
@@ -60,7 +60,6 @@
     },
     "nsis": {
       "allowToChangeInstallationDirectory": true,
-      "shortcutName": "NEMU",
       "oneClick": false,
       "perMachine": true,
       "menuCategory": true

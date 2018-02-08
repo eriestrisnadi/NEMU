@@ -41,6 +41,7 @@ export default class Speaker {
   }
 
   onaudioprocess(e) {
+    let samples;
     let left = e.outputBuffer.getChannelData(0);
     let right = e.outputBuffer.getChannelData(1);
     let size = left.length;
@@ -51,7 +52,7 @@ export default class Speaker {
     }
 
     try {
-      let samples = this.buffer.deqN(size * 2);
+      samples = this.buffer.deqN(size * 2);
     } catch (e) {
       // onBufferUnderrun failed to fill the buffer, so handle a real buffer
       // underrun
