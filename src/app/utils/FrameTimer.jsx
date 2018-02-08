@@ -9,7 +9,6 @@
 // will sometimes be out of sync, causing missed frames.
 export default class FrameTimer {
   constructor(opts = {}) {
-
     const defaultOpts = {
       running: false,
       bodgeMode: false,
@@ -21,8 +20,8 @@ export default class FrameTimer {
       calibrationStartTime: null,
       calibrationCurrentFrames: null,
       onGenerateFrame: undefined,
-      onWriteFrame: undefined
-    }
+      onWriteFrame: undefined,
+    };
 
     this.opts = Object.assign({}, defaultOpts, opts);
   }
@@ -56,16 +55,18 @@ export default class FrameTimer {
       if (this.opts.calibrationCurrentFrames === this.opts.calibrationFrames) {
         this.opts.calibrating = false;
 
-        var now = new Date().getTime();
-        var delta = now - this.opts.calibrationStartTime;
-        var fps = 1000 / (delta / this.opts.calibrationFrames);
+        let now = new Date().getTime();
+        let delta = now - this.opts.calibrationStartTime;
+        let fps = 1000 / (delta / this.opts.calibrationFrames);
 
         if (
           fps <= this.opts.desiredFPS - this.opts.calibrationTolerance ||
           fps >= this.opts.desiredFPS + this.opts.calibrationTolerance
         ) {
           console.log(
-            `Enabling bodge mode. (Desired FPS is ${this.opts.desiredFPS}, actual FPS is ${fps})`
+            `Enabling bodge mode. (Desired FPS is ${
+              this.opts.desiredFPS
+            }, actual FPS is ${fps})`
           );
           this.startBodgeMode();
         }
@@ -80,16 +81,16 @@ export default class FrameTimer {
       }
       this.opts.onWriteFrame();
     }
-  };
+  }
 
   startBodgeMode() {
     this.opts.bodgeMode = true;
     this.opts.bodgeInterval = setInterval(() => this.onBodge(), 1000 / this.opts.desiredFPS);
-  };
+  }
 
   onBodge() {
     if (this.opts.running) {
       this.opts.onGenerateFrame();
     }
-  };
+  }
 }

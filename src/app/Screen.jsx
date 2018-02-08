@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class Screen extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.$ = {
@@ -10,7 +10,7 @@ class Screen extends Component {
       imageData: undefined,
       buf: undefined,
       buf8: undefined,
-      buf32: undefined
+      buf32: undefined,
     };
 
     this.writeBuffer.bind(this);
@@ -55,34 +55,34 @@ class Screen extends Component {
       buf,
       buf8,
       buf32,
-      imageData
+      imageData,
     });
 
     // Set alpha
     for (let i = 0; i < buf32.length; ++i) {
-      if(this.$.buf32 !== 'undefined' && this.$.buf32.length) {
+      if (this.$.buf32 !== "undefined" && this.$.buf32.length) {
         this.$.buf32[i] = 0xff000000;
       }
     }
   }
 
   setBuffer(buffer) {
-    var i = 0;
-    for (var y = 0; y < 240; ++y) {
-      for (var x = 0; x < 256; ++x) {
+    let i = 0;
+    for (let y = 0; y < 240; ++y) {
+      for (let x = 0; x < 256; ++x) {
         i = y * 256 + x;
         // Convert pixel from NES BGR to canvas ABGR
-        if(this.$.buf32 !== 'undefined' && this.$.buf32.length) {
+        if (this.$.buf32 !== "undefined" && this.$.buf32.length) {
           this.$.buf32[i] = 0xff000000 | buffer[i]; // Full alpha
         }
       }
     }
-  };
+  }
 
   writeBuffer() {
     this.$.imageData.data.set(this.$.buf8);
     this.$.context.putImageData(this.$.imageData, 0, 0);
-  };
+  }
 
   fitInParent() {
     const canvas = this.$.canvas;
@@ -98,9 +98,9 @@ class Screen extends Component {
       this.canvas.style.width = `${parentWidth}px`;
       this.canvas.style.height = `${Math.round(parentWidth / desiredRatio)}px`;
     }
-    
-    this.$ = Object.assign({}, this.$, {canvas: this.canvas});
-  };
+
+    this.$ = Object.assign({}, this.$, { canvas: this.canvas });
+  }
 
   handleMouseDown(e) {
     if (!this.props.onMouseDown) return;
@@ -110,7 +110,7 @@ class Screen extends Component {
     const x = Math.round((e.clientX - rect.left) * scale);
     const y = Math.round((e.clientY - rect.top) * scale);
     this.props.onMouseDown(x, y);
-  };
+  }
 }
 
 export default Screen;

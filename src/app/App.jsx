@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { HashRouter, Route } from 'react-router-dom';
-import Home from './Home';
-import Run from './Run';
+import React, { Component } from "react";
+import { HashRouter, Route } from "react-router-dom";
+import Home from "./Home";
+import Run from "./Run";
 
 class App extends Component {
   constructor(props) {
@@ -10,19 +10,15 @@ class App extends Component {
 
   render() {
     const Page = {
-      Home: (props) => {
+      Home: props => {
         props = Object.assign({}, this.props, props);
-        return(
-          <Home {...props} />
-        )
+        return <Home {...props} />;
       },
-      Run: (props) => {
+      Run: props => {
         props = Object.assign({}, this.props, props);
-        return(
-          <Run {...props} />
-        )
-      }
-    }
+        return <Run {...props} />;
+      },
+    };
 
     return (
       <HashRouter>
