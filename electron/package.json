@@ -1,5 +1,5 @@
 {
-  "name": "NEMU",
+  "name": "NEMU-DESKTOP",
   "version": "0.0.1",
   "main": "main.js",
   "license": "MIT",
@@ -21,12 +21,19 @@
     "npm-run-all": "^4.1.2"
   },
   "build": {
-    "appId": "com.saruaho.app",
-    "mac": {
-      "category": "public.app-category.games"
-    },
+    "appId": "com.nemu.app",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "lowsprofile",
+        "repo": "NEMU"
+      }
+    ],
     "directories": {
       "output": "dist"
+    },
+    "mac": {
+      "category": "public.app-category.games"
     },
     "win": {
       "target": [
@@ -38,6 +45,25 @@
           ]
         }
       ]
+    },
+    "linux": {
+      "category": "Game",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "NEMU",
+      "oneClick": false,
+      "perMachine": true,
+      "menuCategory": true
     }
   },
   "scripts": {
