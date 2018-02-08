@@ -1,0 +1,26 @@
+{
+  "extends": [
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier"
+  ],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "rules": {
+    "no-var": "error",
+    "prettier/prettier": ["error", {
+      "trailingComma": "es5",
+      "printWidth": 95
+    }]
+  }
+}

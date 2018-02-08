@@ -1,86 +1,86 @@
-import { Controller } from 'jsnes';
+import { Controller } from "jsnes";
 
 const KEYS = [
   {
     controller: 1,
     key: Controller.BUTTON_A,
-    value: 88
+    value: 88,
   },
   {
     controller: 1,
     key: Controller.BUTTON_B,
-    value: 90
+    value: 90,
   },
   {
     controller: 1,
     key: Controller.BUTTON_SELECT,
-    value: 17
+    value: 17,
   },
   {
     controller: 1,
     key: Controller.BUTTON_START,
-    value: 13
+    value: 13,
   },
   {
     controller: 1,
     key: Controller.BUTTON_UP,
-    value: 38
+    value: 38,
   },
   {
     controller: 1,
     key: Controller.BUTTON_DOWN,
-    value: 40
+    value: 40,
   },
   {
     controller: 1,
     key: Controller.BUTTON_LEFT,
-    value: 37
+    value: 37,
   },
   {
     controller: 1,
     key: Controller.BUTTON_RIGHT,
-    value: 39
+    value: 39,
   },
   {
     controller: 2,
     key: Controller.BUTTON_A,
-    value: 103
+    value: 103,
   },
   {
     controller: 2,
     key: Controller.BUTTON_B,
-    value: 105
+    value: 105,
   },
   {
     controller: 2,
     key: Controller.BUTTON_SELECT,
-    value: 99
+    value: 99,
   },
   {
     controller: 2,
     key: Controller.BUTTON_START,
-    value: 97
+    value: 97,
   },
   {
     controller: 2,
     key: Controller.BUTTON_UP,
-    value: 104
+    value: 104,
   },
   {
     controller: 2,
     key: Controller.BUTTON_DOWN,
-    value: 98
+    value: 98,
   },
   {
     controller: 2,
     key: Controller.BUTTON_LEFT,
-    value: 100
+    value: 100,
   },
   {
     controller: 2,
     key: Controller.BUTTON_RIGHT,
-    value: 102
-  }
+    value: 102,
+  },
 ];
 
 export default KEYS;

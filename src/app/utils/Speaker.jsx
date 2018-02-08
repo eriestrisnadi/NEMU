@@ -1,11 +1,11 @@
-import RingBuffer from 'ringbufferjs';
+import RingBuffer from "ringbufferjs";
 
 export default class Speaker {
   constructor(opts = {}) {
     const defaultOpts = {
       onBufferUnderrun: undefined,
       bufferSize: 8192,
-    }
+    };
 
     this.opts = Object.assign({}, defaultOpts, opts);
     this.buffer = new RingBuffer(this.opts.bufferSize * 2);
@@ -41,9 +41,10 @@ export default class Speaker {
   }
 
   onaudioprocess(e) {
-    var left = e.outputBuffer.getChannelData(0);
-    var right = e.outputBuffer.getChannelData(1);
-    var size = left.length;
+    let samples;
+    let left = e.outputBuffer.getChannelData(0);
+    let right = e.outputBuffer.getChannelData(1);
+    let size = left.length;
 
     // We're going to buffer underrun. Attempt to fill the buffer.
     if (this.buffer.size() < size * 2 && this.opts.onBufferUnderrun) {
@@ -51,25 +52,25 @@ export default class Speaker {
     }
 
     try {
-      var samples = this.buffer.deqN(size * 2);
+      samples = this.buffer.deqN(size * 2);
     } catch (e) {
       // onBufferUnderrun failed to fill the buffer, so handle a real buffer
       // underrun
 
       // ignore empty buffers... assume audio has just stopped
-      var bufferSize = this.buffer.size() / 2;
+      let bufferSize = this.buffer.size() / 2;
       if (bufferSize > 0) {
         console.log(`Buffer underrun (needed ${size}, got ${bufferSize})`);
       }
-      for (var j = 0; j < size; j++) {
+      for (let j = 0; j < size; j++) {
         left[j] = 0;
         right[j] = 0;
       }
       return;
     }
-    for (var i = 0; i < size; i++) {
+    for (let i = 0; i < size; i++) {
       left[i] = samples[i * 2];
       right[i] = samples[i * 2 + 1];
     }
-  };
+  }
 }
